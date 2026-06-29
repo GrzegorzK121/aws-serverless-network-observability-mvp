@@ -48,3 +48,17 @@ Invalid telemetry values are rejected before saving to DynamoDB.
   "packet_loss": 3.1,
   "rssi": -90
 }
+
+## Screenshots
+
+### Successful metric ingestion
+![Normal metric](docs/screenshots/postman-normal-metric.png)
+
+### Anomaly detection
+![Anomaly metric](docs/screenshots/postman-anomaly-metric.png)
+
+### Validation error
+![Validation error](docs/screenshots/postman-validation-error.png)
+
+### DynamoDB stored observations
+![DynamoDB items](docs/screenshots/dynamodb-networkmetrics-items.png)
