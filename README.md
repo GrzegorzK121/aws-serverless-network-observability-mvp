@@ -48,6 +48,7 @@ Invalid telemetry values are rejected before saving to DynamoDB.
   "packet_loss": 3.1,
   "rssi": -90
 }
+```
 
 ## Screenshots
 
