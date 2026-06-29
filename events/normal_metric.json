@@ -1,0 +1,7 @@
+{
+  "device_id": "ap-001",
+  "timestamp": "2026-06-29T22:10:00Z",
+  "latency_ms": 35,
+  "packet_loss": 0.1,
+  "rssi": -55
+}

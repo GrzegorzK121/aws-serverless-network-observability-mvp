@@ -1,0 +1,7 @@
+{
+  "device_id": "router-001",
+  "timestamp": "2026-06-29T22:25:00Z",
+  "latency_ms": 190,
+  "packet_loss": 3.1,
+  "rssi": -90
+}
