@@ -63,3 +63,49 @@ Invalid telemetry values are rejected before saving to DynamoDB.
 
 ### DynamoDB stored observations
 ![DynamoDB items](docs/screenshots/dynamodb-networkmetrics-items.png)
+
+## Randomized telemetry load test
+
+As another small building block of this project, I added a randomized telemetry load-style test.
+
+The test sends multiple JSON events to the API Gateway endpoint using PowerShell. Each event represents a network device telemetry sample with values such as latency, packet loss and RSSI. The script mixes normal metrics, anomaly scenarios and invalid payloads to check how the system behaves with different kinds of input.
+
+The goal was to make the project closer to a real network observability ingestion pipeline, not just a single manually tested Lambda function.
+
+The test verifies the full flow:
+
+* API Gateway receives telemetry events
+* AWS Lambda validates the payload
+* anomaly detection classifies problematic metrics
+* valid observations are stored in DynamoDB
+* invalid telemetry is rejected before persistence
+* CloudWatch custom metrics show accepted, rejected and anomalous events
+
+Tested scenarios include:
+
+* normal telemetry events
+* high latency events
+* packet loss events
+* low RSSI events
+* combined anomaly events
+* invalid RSSI values
+* negative latency values
+* missing required fields
+
+### PowerShell randomized load test
+
+![PowerShell load test 1](docs/screenshots/powershell-load-test1.png)
+
+![PowerShell load test 5](docs/screenshots/powershell-load-test5.png)
+
+### CloudWatch custom metrics after the test
+
+![CloudWatch custom metrics load test](docs/screenshots/cloudwatch-custom-metrics-load-test.png)
+
+### DynamoDB stored telemetry observations
+
+![DynamoDB load test items](docs/screenshots/dynamodb-load-test-items.png)
+
+### Validation error example from Postman
+
+![Postman validation error](docs/screenshots/postman-validation-error.png)
