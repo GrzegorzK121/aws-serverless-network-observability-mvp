@@ -115,12 +115,9 @@ Tested scenarios include:
 * negative latency values
 * missing required fields
 
-### PowerShell randomized load test
+PowerShell randomized load test
 
-<p align="center">
-  <img src="docs/screenshots/powershell-load-test1.png" width="50%" alt="PowerShell load test 1">
-  <img src="docs/screenshots/powershell-load-test5.png" width="50%" alt="PowerShell load test 5">
-</p>
+<table> <tr> <td width="50%"> <img src="docs/screenshots/powershell-load-test1.png" width="100%" alt="PowerShell load test 1"> </td> <td width="50%"> <img src="docs/screenshots/powershell-load-test5.png" width="100%" alt="PowerShell load test 5"> </td> </tr> </table>
 
 ### CloudWatch custom metrics after the test
 
