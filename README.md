@@ -84,7 +84,7 @@ Invalid telemetry values are rejected before saving to DynamoDB.
 ### DynamoDB stored observations
 
 <p align="center">
-  <img src="docs/screenshots/dynamodb-networkmetrics-items.png" width="50%" alt="DynamoDB items">
+  <img src="docs/screenshots/dynamodb-networkmetrics-items.png" width="50%" alt="DynamoDB NetworkMetrics items">
 </p>
 
 ## Randomized telemetry load test
@@ -117,10 +117,16 @@ Tested scenarios include:
 
 ### PowerShell randomized load test
 
-<p align="center">
-  <img src="docs/screenshots/powershell-load-test1.png" width="50%" alt="PowerShell load test 1">
-  <img src="docs/screenshots/powershell-load-test5.png" width="50%" alt="PowerShell load test 5">
-</p>
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/powershell-load-test1.png" width="100%" alt="PowerShell load test 1">
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/powershell-load-test5.png" width="100%" alt="PowerShell load test 5">
+    </td>
+  </tr>
+</table>
 
 ### CloudWatch custom metrics after the test
 
@@ -131,7 +137,7 @@ Tested scenarios include:
 ### DynamoDB stored telemetry observations
 
 <p align="center">
-  <img src="docs/screenshots/dynamodb-load-test-items.png" width="50%" alt="DynamoDB load test items">
+  <img src="docs/screenshots/dynamodb-networkmetrics-items.png" width="50%" alt="DynamoDB load test items">
 </p>
 
 ### Validation error example from Postman
@@ -147,6 +153,7 @@ This is a simple randomized PowerShell-based telemetry test, not a full performa
 Its purpose is to verify different input scenarios: normal metrics, anomaly metrics and invalid payloads.
 
 The test helps confirm that the API Gateway → Lambda → DynamoDB flow works correctly, invalid telemetry is rejected, anomalies are detected and CloudWatch custom metrics are published.
+
 
 ## Tests
 
