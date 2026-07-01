@@ -6,35 +6,46 @@ The project is inspired by network observability systems used for device telemet
 
 ## Architecture
 
-Postman / HTTP Client  
-→ API Gateway  
-→ AWS Lambda  
-→ validation + anomaly detection  
-→ DynamoDB `NetworkMetrics`
+The project follows a simple serverless telemetry ingestion flow.
+Postman or a PowerShell script sends JSON telemetry events to API Gateway. API Gateway triggers the Lambda function, which validates the payload, detects anomalies and sends data to AWS services.
+
+<p align="center">
+  <img src="docs/screenshots/topology.png" width="50%" alt="AWS serverless network observability topology">
+</p>
+
+Current and planned building blocks:
+
+* **API Gateway** receives HTTP telemetry requests.
+* **AWS Lambda** processes JSON events, validates metrics and detects anomalies.
+* **DynamoDB** stores structured network observations.
+* **CloudWatch** stores logs and custom observability metrics.
+* **S3** is planned for raw telemetry event archiving.
+* **SQS** is planned for asynchronous anomaly event processing.
 
 ## AWS services used
 
-- AWS Lambda
-- API Gateway
-- DynamoDB
-- IAM execution role
-- CloudWatch Logs
+* AWS Lambda
+* API Gateway
+* DynamoDB
+* IAM execution role
+* CloudWatch Logs
+* CloudWatch custom metrics
 
 ## Metrics
 
 The Lambda function processes JSON telemetry events with:
 
-- `device_id`
-- `timestamp`
-- `latency_ms`
-- `packet_loss`
-- `rssi`
+* `device_id`
+* `timestamp`
+* `latency_ms`
+* `packet_loss`
+* `rssi`
 
 ## Anomaly detection rules
 
-- `latency_ms > 150` → `HIGH_LATENCY`
-- `packet_loss > 2.0` → `PACKET_LOSS`
-- `rssi < -85` → `LOW_RSSI`
+* `latency_ms > 150` → `HIGH_LATENCY`
+* `packet_loss > 2.0` → `PACKET_LOSS`
+* `rssi < -85` → `LOW_RSSI`
 
 Invalid telemetry values are rejected before saving to DynamoDB.
 
@@ -53,16 +64,28 @@ Invalid telemetry values are rejected before saving to DynamoDB.
 ## Screenshots
 
 ### Successful metric ingestion
-![Normal metric](docs/screenshots/postman-normal-metric.png)
+
+<p align="center">
+  <img src="docs/screenshots/postman-normal-metric.png" width="50%" alt="Normal metric">
+</p>
 
 ### Anomaly detection
-![Anomaly metric](docs/screenshots/postman-anomaly-metric.png)
+
+<p align="center">
+  <img src="docs/screenshots/postman-anomaly-metric.png" width="50%" alt="Anomaly metric">
+</p>
 
 ### Validation error
-![Validation error](docs/screenshots/postman-validation-error.png)
+
+<p align="center">
+  <img src="docs/screenshots/postman-validation-error.png" width="50%" alt="Validation error">
+</p>
 
 ### DynamoDB stored observations
-![DynamoDB items](docs/screenshots/dynamodb-networkmetrics-items.png)
+
+<p align="center">
+  <img src="docs/screenshots/dynamodb-networkmetrics-items.png" width="50%" alt="DynamoDB items">
+</p>
 
 ## Randomized telemetry load test
 
@@ -94,18 +117,70 @@ Tested scenarios include:
 
 ### PowerShell randomized load test
 
-![PowerShell load test 1](docs/screenshots/powershell-load-test1.png)
-
-![PowerShell load test 5](docs/screenshots/powershell-load-test5.png)
+<p align="center">
+  <img src="docs/screenshots/powershell-load-test1.png" width="50%" alt="PowerShell load test 1">
+  <img src="docs/screenshots/powershell-load-test5.png" width="50%" alt="PowerShell load test 5">
+</p>
 
 ### CloudWatch custom metrics after the test
 
-![CloudWatch custom metrics load test](docs/screenshots/cloudwatch-custom-metrics-load-test.png)
+<p align="center">
+  <img src="docs/screenshots/cloudwatch-custom-metrics-load-test.png" width="50%" alt="CloudWatch custom metrics load test">
+</p>
 
 ### DynamoDB stored telemetry observations
 
-![DynamoDB load test items](docs/screenshots/dynamodb-load-test-items.png)
+<p align="center">
+  <img src="docs/screenshots/dynamodb-load-test-items.png" width="50%" alt="DynamoDB load test items">
+</p>
 
 ### Validation error example from Postman
 
-![Postman validation error](docs/screenshots/postman-validation-error.png)
+<p align="center">
+  <img src="docs/screenshots/postman-validation-error.png" width="50%" alt="Postman validation error">
+</p>
+
+### Test complexity note
+
+This is a simple randomized PowerShell-based telemetry test, not a full performance benchmark.
+
+Its purpose is to verify different input scenarios: normal metrics, anomaly metrics and invalid payloads.
+
+The test helps confirm that the API Gateway → Lambda → DynamoDB flow works correctly, invalid telemetry is rejected, anomalies are detected and CloudWatch custom metrics are published.
+
+## Tests
+
+```bash
+pytest -v
+```
+
+Current test coverage includes:
+
+* payload validation
+* invalid RSSI rejection
+* missing field rejection
+* anomaly detection
+* Lambda-style handler response
+
+## Next building blocks
+
+This project is built step by step, like adding small engineering blocks to a working system.
+
+Current working blocks:
+
+* API Gateway as the HTTP entry point
+* AWS Lambda for Python-based telemetry processing
+* DynamoDB for storing validated network observations
+* CloudWatch custom metrics for basic observability
+* pytest tests for validation and anomaly detection logic
+* randomized PowerShell telemetry test
+
+Planned next blocks:
+
+* **S3 raw telemetry archive**
+  Store original incoming JSON events in S3 for later troubleshooting and batch analysis.
+
+* **SQS anomaly queue**
+  Send detected anomaly events to SQS to simulate asynchronous network troubleshooting workflows.
+
+These additions are planned as small incremental improvements, not as a rewrite of the project.
