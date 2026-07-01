@@ -10,7 +10,7 @@ The project follows a simple serverless telemetry ingestion flow.
 Postman or a PowerShell script sends JSON telemetry events to API Gateway. API Gateway triggers the Lambda function, which validates the payload, detects anomalies and sends data to AWS services.
 
 <p align="center">
-  <img src="docs/screenshots/topology.png" width="50%" alt="AWS serverless network observability topology">
+  <img src="docs/screenshots/topology.png" width="70%" alt="AWS serverless network observability topology">
 </p>
 
 Current and planned building blocks:
@@ -157,6 +157,20 @@ This is a simple randomized PowerShell-based telemetry test, not a full performa
 Its purpose is to verify different input scenarios: normal metrics, anomaly metrics and invalid payloads.
 
 The test helps confirm that the API Gateway → Lambda → DynamoDB flow works correctly, invalid telemetry is rejected, anomalies are detected and CloudWatch custom metrics are published.
+
+## S3 raw telemetry archive
+
+As another building block, the Lambda function archives accepted raw telemetry events in S3.
+
+DynamoDB stores structured metric observations, while S3 keeps the original JSON payloads for troubleshooting and possible batch analysis.
+
+<p align="center">
+  <img src="docs/screenshots/postman-s3-response.png" width="50%" alt="Postman S3 response">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/s3-raw-events-object.png" width="50%" alt="S3 raw telemetry object">
+</p>
 
 
 ## Tests
